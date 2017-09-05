@@ -43,9 +43,9 @@ public class Components {
 	
 	public static JFrame getFrame(){
 		JFrame frame = new JFrame();
-		frame.setSize(1024,600);
+		frame.setSize(800,480);
 		frame.setResizable(false);
-		frame.setTitle("Color ");
+		frame.setTitle("ArtBiotech ");
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		return frame;

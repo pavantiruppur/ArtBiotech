@@ -1,8 +1,10 @@
 package com.ab.controller;
 
+import com.ab.ModelAndView;
 import com.ab.annoation.Controller;
+import com.ab.annoation.ControllerAction;
 
-@Controller
+@Controller(name = "main")
 public class MainController {
 
 	private static MainController instance;
@@ -17,7 +19,9 @@ public class MainController {
 	
 	private MainController() {}
 	
-	public String startUpWindow() {
-		return "loadMainWindow";
+	@ControllerAction(action = "startUp")
+	public ModelAndView startUpWindow() {
+		ModelAndView modelAndView = new ModelAndView("loadMainWindow", null);
+		return modelAndView;
 	}
 }

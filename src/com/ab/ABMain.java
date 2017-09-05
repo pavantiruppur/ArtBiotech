@@ -1,15 +1,13 @@
 package com.ab;
 
-import java.util.Set;
-
-
-import com.ab.annoation.Controller;
+import java.lang.reflect.InvocationTargetException;
 
 public class ABMain {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 
-		
+		Handler.handle("Main.startup");
 	}
 
 }
