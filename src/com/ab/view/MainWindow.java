@@ -1,8 +1,9 @@
 package com.ab.view;
 
+import java.awt.GridLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 
 import com.ab.components.Components;
 
@@ -29,7 +30,8 @@ public class MainWindow {
 	public void loadFrame() {
 		frame = Components.getFrame();
 		
-		
+		mainPanel = new JPanel();
+		GridLayout gridLayout = new GridLayout(0,1);
 		
 		frame.setVisible(true);
 	}
