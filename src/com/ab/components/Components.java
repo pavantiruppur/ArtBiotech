@@ -48,6 +48,8 @@ public class Components {
 		frame.setTitle("ArtBiotech ");
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Already there
+//	    frame.setUndecorated(true);
 		return frame;
 	}
 	
