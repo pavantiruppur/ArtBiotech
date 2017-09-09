@@ -1,9 +1,13 @@
 package com.ab.common;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class ClassFinder {
 
@@ -22,6 +26,32 @@ public class ClassFinder {
             throw new IllegalArgumentException(String.format(BAD_PACKAGE_ERROR, scannedPath, scannedPackage));
         }
         File scannedDir = new File(scannedUrl.getFile());
+        
+        if(scannedDir.getAbsolutePath().contains(".jar")) {
+        	ZipInputStream zip;
+        	List<String> classes = new ArrayList<>();
+        	try {
+        		String jarLocation = scannedDir.getAbsolutePath();
+        		System.out.println(jarLocation);
+        		jarLocation = jarLocation.substring(jarLocation.indexOf("file:")+5, jarLocation.indexOf(".jar")+4);
+        		System.out.println(jarLocation);
+        		zip = new ZipInputStream(new FileInputStream(jarLocation));
+        		for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
+        			if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
+        				// This ZipEntry represents a class. Now, what class does it represent?
+        				String className = entry.getName().replace('/', '.'); // including ".class"
+        				className = className.substring(0, className.length() - ".class".length());
+        				if(className.startsWith(scannedPackage)) {
+        					classes.add(className);
+        				}
+        			}
+        		}
+        	} catch (Exception e) {
+        		e.printStackTrace();
+        	}
+        	return convertAllIntoClass(classes);
+        }
+        
         List<Class<?>> classes = new ArrayList<Class<?>>();
         for (File file : scannedDir.listFiles()) {
             classes.addAll(find(file, scannedPackage));
@@ -45,6 +75,16 @@ public class ClassFinder {
             }
         }
         return classes;
+    }
+    
+    private static List<Class<?>> convertAllIntoClass(List<String> classes) {
+        List<Class<?>> classList = new ArrayList<Class<?>>();
+    	for(String cls : classes) {
+            try {
+            	classList.add(Class.forName(cls));
+            } catch (ClassNotFoundException ignore) {}
+    	}
+    	return classList;
     }
 
 }

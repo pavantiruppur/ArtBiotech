@@ -5,7 +5,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -41,6 +45,20 @@ public class Components {
 	static Font fontBt = new Font(Font.DIALOG, Font.BOLD, 15);
 	static Font fontSmall = new Font(Font.DIALOG, Font.BOLD, 12);
 	
+	static GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	static Font DP_MEDIUM_FONT = null;
+	static Font DP_HEAVY_FONT = null;
+	static {
+		try {
+			DP_MEDIUM_FONT = Font.createFont(Font.TRUETYPE_FONT, Components.class.getClassLoader().getResourceAsStream("resources/fonts/Device-Paralucent-Medium.otf"));
+			ge.registerFont(DP_MEDIUM_FONT);
+			DP_HEAVY_FONT = Font.createFont(Font.TRUETYPE_FONT, Components.class.getClassLoader().getResourceAsStream("resources/fonts/Device-Paralucent-Heavy.otf"));
+			ge.registerFont(DP_HEAVY_FONT);
+		} catch (FontFormatException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static JFrame getFrame(){
 		JFrame frame = new JFrame();
 		frame.setSize(800,480);
@@ -49,7 +67,7 @@ public class Components {
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Already there
-//	    frame.setUndecorated(true);
+	    frame.setUndecorated(true);
 		return frame;
 	}
 	
@@ -68,6 +86,14 @@ public class Components {
 		panel.setPreferredSize(new Dimension(300,575));
 //		panel.setBorder(BorderFactory.createLineBorder(Color.black));
 		return panel;
+	}
+	
+	public static Font getDPMediumFont(float size) {
+		return DP_MEDIUM_FONT.deriveFont(size);
+	}
+	
+	public static Font getDPHeavyFont(float size) {
+		return DP_HEAVY_FONT.deriveFont(size);
 	}
 	
 	public static JPanel setBorderLayout(JPanel panel){

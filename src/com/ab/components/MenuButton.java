@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT;
 
 @SuppressWarnings("serial")
 public class MenuButton extends JLabel {
@@ -17,11 +18,15 @@ public class MenuButton extends JLabel {
 	Icon onIcon;
 	Icon offIcon;
 	
-	public MenuButton(String onIcon, String offIcon) {
-		this.onIcon = new ImageIcon(onIcon); 
-		this.offIcon = new ImageIcon(offIcon);
+	public MenuButton(String onIcon, String offIcon, Boolean isDefaultOn) {
+		this.onIcon = new ImageIcon(getClass().getClassLoader().getResource(onIcon)); 
+		this.offIcon = new ImageIcon(getClass().getClassLoader().getResource(offIcon));
 		menuButtons.add(this);
-		setIcon(this.offIcon);
+		if (isDefaultOn) {
+			setIcon(this.onIcon);
+		} else {
+			setIcon(this.offIcon);
+		}
 		MenuMouseListner ml = new MenuMouseListner();
 		super.addMouseListener(ml);
 	}
