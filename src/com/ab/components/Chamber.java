@@ -6,29 +6,33 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.ab.communication.SerialComm;
 import com.ab.view.MainWindow;
 
 @SuppressWarnings("serial")
 public class Chamber extends JPanel {
 	
 	public static List<Chamber> chambers = new ArrayList<>();
+	public static Map<String, Chamber> chamberMap = new HashMap<>();
 
 	String chamberName;
 	ImageIcon chamberIcon;
 	JLabel pvValue;
 	JLabel svValue;
-	Double pv = 34.7;
+	public Double pv = 34.7;
 	Double sv = 34.7;
 	Double oldSvValue = sv;
 	
-	Integer flowRate = 50;
+	public Integer flowRate = 50;
 	
 	Boolean isEditable = false;
 	
@@ -41,9 +45,14 @@ public class Chamber extends JPanel {
 		this.chamberName = chamberName;
 		this.chamberIcon = new ImageIcon(getClass().getClassLoader().getResource(chamberIcon));
 		Chamber.chambers.add(this);
+		chamberMap.put(chamberName, this);
 		load();
 	}
 
+	public static Chamber getChamberByName(String chamberName) {
+		return chamberMap.get(chamberName);
+	}
+	
 	private void load() {
 
 		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
@@ -121,6 +130,7 @@ public class Chamber extends JPanel {
 				isEditable = !isEditable;
 				if(!isEditable) {
 					oldSvValue = sv;
+					SerialComm.sendChamberData(chamberName, sv);
 				}
 				upArrowLbl.setEnabled(isEditable);
 				downArrowLbl.setEnabled(isEditable);
@@ -168,5 +178,13 @@ public class Chamber extends JPanel {
 		});
 		downArrowLbl.setEnabled(isEditable);
 		add(downArrowLbl);
+	}
+	
+	public void refreshPV() {
+		chamberBgLbl.setText("<html><div style='font-size: 15px'><br></div><font color=#373636>&nbsp;"+ String.format("%4.1f" , pv) +"\u00b0c</font><br><br><font color=#848282>&nbsp;"+ String.format("%4.1f" , sv) +"\u00b0c</font></html>");
+	}
+	
+	public void refreshflowRate() {
+		flowRateLbl.setText("<html><font color=#373636>"+flowRate + "</font>" + " <font color=#a2a1a1>ml/min</font></html>");
 	}
 }

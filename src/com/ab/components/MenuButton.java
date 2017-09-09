@@ -8,7 +8,6 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT;
 
 @SuppressWarnings("serial")
 public class MenuButton extends JLabel {

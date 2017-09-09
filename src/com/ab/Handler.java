@@ -38,6 +38,19 @@ public class Handler {
 		Method viewMethod = getViewMethodByAnnoName(viewMethodName, viewCls);
 		viewMethod.invoke(view, modelAndView);
 	}
+	
+	public static void handleView(String action, Object obj) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		String viewName = action.contains(".") ? action.split("\\.")[0] : "Main";
+		String viewMethodName = action.contains(".") ? action.split("\\.")[1] : action;
+
+		Class<?> viewCls = getViewClsByAnnoName(viewName);
+		Object view = viewCls.getMethod("getInstance").invoke(null);
+		
+		ModelAndView modelAndView = new ModelAndView(action, obj);
+
+		Method viewMethod = getViewMethodByAnnoName(viewMethodName, viewCls);
+		viewMethod.invoke(view, modelAndView);
+	}
 
 	public static Class<?> getControllerClsByAnnoName(String annoationName) {
 

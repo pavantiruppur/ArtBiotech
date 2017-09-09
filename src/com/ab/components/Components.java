@@ -8,13 +8,11 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
-import java.io.File;
 import java.io.IOException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -64,7 +62,6 @@ public class Components {
 		frame.setSize(800,480);
 		frame.setResizable(false);
 		frame.setTitle("ArtBiotech ");
-		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Already there
 	    frame.setUndecorated(true);
@@ -182,12 +179,6 @@ public class Components {
 		return passwordField;
 	}
 	
-	public static JComboBox getComboBox(String[] data,JComponent parent,int width){
-		JComboBox comboBox = new JComboBox(data);
-		parent.add(comboBox);
-		comboBox.setPreferredSize(new Dimension(width, 25));
-		return comboBox;
-	}
 	
 	public static JButton getButton(String name, JComponent parent){
 		JButton button = new JButton(name);

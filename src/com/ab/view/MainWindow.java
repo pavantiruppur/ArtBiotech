@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import com.ab.communication.SerialComm;
 import com.ab.components.Chamber;
 import com.ab.components.Components;
 import com.ab.components.MenuButton;
@@ -40,8 +41,14 @@ public class MainWindow {
 	public JPanel header;
 	public JPanel body;
 	public JPanel footer;
+	public JLabel gasEmptyAlarmLbl;
 	
 	public Boolean isGasOn = false;
+	public Double co2Value = 6.0;
+	public Double o2Value = 5.5;
+	
+	JLabel o2ValueLbl = null;
+	JLabel co2ValueLbl = null;
 	
 	FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT, 0 ,0);
 	
@@ -171,9 +178,9 @@ public class MainWindow {
 		co2ImgLbl.setIcon(co2Icon);
 		co2Panel.add(co2ImgLbl);
 
-		JLabel co2Value = new JLabel("6.0");
-		co2Value.setFont(Components.getDPHeavyFont(30f));
-		co2Panel.add(co2Value);
+		co2ValueLbl = new JLabel(String.format("%4.1f" , co2Value));
+		co2ValueLbl.setFont(Components.getDPHeavyFont(30f));
+		co2Panel.add(co2ValueLbl);
 		
 		ImageIcon co2PercIcon = new ImageIcon(getClass().getClassLoader().getResource("resources/bb-percent-label.png")); 
 		JLabel co2PercImgLbl = new JLabel();
@@ -193,9 +200,9 @@ public class MainWindow {
 		o2ImgLbl.setIcon(o2Icon);
 		o2Panel.add(o2ImgLbl);
 
-		JLabel o2Value = new JLabel("5.5");
-		o2Value.setFont(Components.getDPHeavyFont(30f));
-		o2Panel.add(o2Value);
+		o2ValueLbl = new JLabel(String.format("%4.1f" , o2Value));
+		o2ValueLbl.setFont(Components.getDPHeavyFont(30f));
+		o2Panel.add(o2ValueLbl);
 		
 		ImageIcon o2PercIcon = new ImageIcon(getClass().getClassLoader().getResource("resources/bb-percent-label.png")); 
 		JLabel o2PercImgLbl = new JLabel();
@@ -237,11 +244,29 @@ public class MainWindow {
 			public void mouseClicked(MouseEvent e) {
 				isGasOn = !isGasOn;
 				gasOnOffLbl.setEnabled(isGasOn);
+				SerialComm.sendGasControl(isGasOn);
 			}
 		});
 		gasOnOffLbl.setEnabled(false);
 		gasPanel.add(gasOnOffLbl);
-		
 		footer.add(gasPanel);
+		
+		// Gas Empty alarm
+		gasEmptyAlarmLbl = new JLabel("Gas Empty Alarm");
+		gasEmptyAlarmLbl.setForeground(new Color(249,  6, 6));
+		ImageIcon gasEmptyAlarmIcon = new ImageIcon(getClass().getClassLoader().getResource("resources/bb-alarm-icon.png")); 
+		gasEmptyAlarmLbl.setIcon(gasEmptyAlarmIcon);
+		gasEmptyAlarmLbl.setFont(Components.getDPMediumFont(20f));
+		gasEmptyAlarmLbl.setVisible(false);
+		footer.add(gasEmptyAlarmLbl);
+		
+	}
+	
+	public void refreshCo2() {
+		co2ValueLbl.setText(String.format("%4.1f" , co2Value)); 
+	}
+	
+	public void refreshO2() {
+		o2ValueLbl.setText(String.format("%4.1f" , o2Value)); 
 	}
 }

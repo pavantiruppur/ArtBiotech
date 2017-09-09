@@ -8,6 +8,7 @@ public class ABMain {
 			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 
 		Handler.handle("Main.startup");
+		Handler.handle("Main.startCommPort");
 	}
 
 }

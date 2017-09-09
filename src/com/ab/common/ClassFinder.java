@@ -2,7 +2,6 @@ package com.ab.common;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +31,7 @@ public class ClassFinder {
         	List<String> classes = new ArrayList<>();
         	try {
         		String jarLocation = scannedDir.getAbsolutePath();
-        		System.out.println(jarLocation);
         		jarLocation = jarLocation.substring(jarLocation.indexOf("file:")+5, jarLocation.indexOf(".jar")+4);
-        		System.out.println(jarLocation);
         		zip = new ZipInputStream(new FileInputStream(jarLocation));
         		for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
         			if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
