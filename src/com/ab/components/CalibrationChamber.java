@@ -19,17 +19,17 @@ import com.ab.communication.SerialComm;
 import com.ab.view.MainWindow;
 
 @SuppressWarnings("serial")
-public class Chamber extends JPanel {
+public class CalibrationChamber extends JPanel {
 	
-	public static List<Chamber> chambers = new ArrayList<>();
-	public static Map<String, Chamber> chamberMap = new HashMap<>();
+	public static List<CalibrationChamber> chambers = new ArrayList<>();
+	public static Map<String, CalibrationChamber> chamberMap = new HashMap<>();
 
 	String chamberName;
 	ImageIcon chamberIcon;
 	JLabel pvValue;
 	JLabel svValue;
-	public Double pv = 31.7;
-	Double sv = 34.7;
+	public Double pv = 32.7;
+	Double sv = 0.0;
 	Double oldSvValue = sv;
 	String operation;
 	
@@ -40,18 +40,17 @@ public class Chamber extends JPanel {
 	JLabel chamberBgLbl;
 	JLabel downArrowLbl;
 	JLabel upArrowLbl;
-	JLabel flowRateLbl;
 
-	public Chamber(String operation, String chamberName, String chamberIcon) {
+	public CalibrationChamber(String operation, String chamberName, String chamberIcon) {
 		this.chamberName = chamberName;
 		this.chamberIcon = new ImageIcon(getClass().getClassLoader().getResource(chamberIcon));
-		Chamber.chambers.add(this);
+		CalibrationChamber.chambers.add(this);
 		chamberMap.put(chamberName, this);
 		this.operation = operation;
 		load();
 	}
 
-	public static Chamber getChamberByName(String chamberName) {
+	public static CalibrationChamber getChamberByName(String chamberName) {
 		return chamberMap.get(chamberName);
 	}
 	
@@ -59,13 +58,13 @@ public class Chamber extends JPanel {
 
 		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		setBackground(MainWindow.getInstance().body.getBackground());
-		setPreferredSize(new Dimension(chamberIcon.getIconWidth() + (chamberIcon.getIconWidth() / 2), chamberIcon.getIconHeight() + 200));
+		setPreferredSize(new Dimension(chamberIcon.getIconWidth() + (chamberIcon.getIconWidth() / 4), chamberIcon.getIconHeight() + 200));
 
 		Icon upArrow = new ImageIcon(getClass().getClassLoader().getResource("resources/ms-adjust-up.png"));
 		upArrowLbl = new JLabel();
 		upArrowLbl.setHorizontalAlignment(JLabel.CENTER);
 		upArrowLbl.setVerticalAlignment(JLabel.CENTER);
-		upArrowLbl.setPreferredSize(new Dimension(chamberIcon.getIconWidth(), 80));
+		upArrowLbl.setPreferredSize(new Dimension(chamberIcon.getIconWidth(), 50));
 		upArrowLbl.setIcon(upArrow);
 		upArrowLbl.addMouseListener(new MouseListener() {
 			
@@ -120,7 +119,7 @@ public class Chamber extends JPanel {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				for(Chamber chamber : Chamber.chambers) {
+				for(CalibrationChamber chamber : CalibrationChamber.chambers) {
 					if(!chamber.chamberName.equals(chamberName) && chamber.isEditable) {
 						chamber.sv = chamber.oldSvValue;
 						chamber.isEditable = !chamber.isEditable;
@@ -132,7 +131,10 @@ public class Chamber extends JPanel {
 				isEditable = !isEditable;
 				if(!isEditable) {
 					oldSvValue = sv;
-					SerialComm.sendChamberData(operation, chamberName, sv);
+					pv += sv;
+					sv = 0.0;
+					SerialComm.sendChamberData(operation, chamberName, pv);
+					chamberBgLbl.setText("<html><div style='font-size: 15px'><br></div><font color=#373636>&nbsp;"+ String.format("%4.1f" , pv) +"\u00b0c</font><br><br><font color=#848282>&nbsp;"+ String.format("%4.1f" , sv) +"\u00b0c</font></html>");
 				}
 				upArrowLbl.setEnabled(isEditable);
 				downArrowLbl.setEnabled(isEditable);
@@ -140,19 +142,11 @@ public class Chamber extends JPanel {
 		});
 		add(chamberBgLbl);
 		
-		flowRateLbl = new JLabel();
-		flowRateLbl.setHorizontalAlignment(JLabel.CENTER);
-		flowRateLbl.setVerticalAlignment(JLabel.CENTER);
-		flowRateLbl.setPreferredSize(new Dimension(chamberIcon.getIconWidth(), 33));
-		flowRateLbl.setFont(Components.getDPHeavyFont(20f));
-		flowRateLbl.setText("<html><font color=#373636>"+flowRate + "</font>" + " <font color=#a2a1a1>ml/min</font></html>");
-		add(flowRateLbl);
-		
 		Icon downArrow = new ImageIcon(getClass().getClassLoader().getResource("resources/ms-adjust-down.png"));
 		downArrowLbl = new JLabel();
 		downArrowLbl.setHorizontalAlignment(JLabel.CENTER);
 		downArrowLbl.setVerticalAlignment(JLabel.CENTER);
-		downArrowLbl.setPreferredSize(new Dimension(chamberIcon.getIconWidth(), 40));
+		downArrowLbl.setPreferredSize(new Dimension(chamberIcon.getIconWidth(), 60));
 		downArrowLbl.setIcon(downArrow);
 		downArrowLbl.addMouseListener(new MouseListener() {
 			
@@ -186,7 +180,13 @@ public class Chamber extends JPanel {
 		chamberBgLbl.setText("<html><div style='font-size: 15px'><br></div><font color=#373636>&nbsp;"+ String.format("%4.1f" , pv) +"\u00b0c</font><br><br><font color=#848282>&nbsp;"+ String.format("%4.1f" , sv) +"\u00b0c</font></html>");
 	}
 	
-	public void refreshflowRate() {
-		flowRateLbl.setText("<html><font color=#373636>"+flowRate + "</font>" + " <font color=#a2a1a1>ml/min</font></html>");
+	public static void refreshAllPV() {
+		for(CalibrationChamber ch : chambers) {
+			if(Chamber.getChamberByName(ch.chamberName) == null){
+				continue;
+			}
+			ch.pv = Chamber.getChamberByName(ch.chamberName).pv;
+			ch.refreshPV();
+		}
 	}
 }

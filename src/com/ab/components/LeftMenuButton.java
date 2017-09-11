@@ -11,17 +11,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.ab.view.MainWindow;
+import com.ab.view.SettingView;
 
 @SuppressWarnings("serial")
-public class MenuButton extends JLabel {
+public class LeftMenuButton extends JLabel {
 
-	private static List<MenuButton> menuButtons = new ArrayList<>();
+	private static List<LeftMenuButton> menuButtons = new ArrayList<>();
 	
 	Icon onIcon;
 	Icon offIcon;
 	JPanel content;
 	
-	public MenuButton(String onIcon, String offIcon, Boolean isDefaultOn, JPanel content) {
+	public LeftMenuButton(String onIcon, String offIcon, Boolean isDefaultOn, JPanel content) {
 		this.onIcon = new ImageIcon(getClass().getClassLoader().getResource(onIcon)); 
 		this.offIcon = new ImageIcon(getClass().getClassLoader().getResource(offIcon));
 		
@@ -40,14 +41,15 @@ public class MenuButton extends JLabel {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			for(MenuButton menuBt :menuButtons) {
+			for(LeftMenuButton menuBt :menuButtons) {
 				menuBt.setIcon(menuBt.offIcon);
 			}
 			setIcon(onIcon);
-			MainWindow.getInstance().body.removeAll();
-			MainWindow.getInstance().body.add(content);
-			MainWindow.getInstance().body.repaint();
-			MainWindow.getInstance().body.validate();
+			SettingView.getInstance().body.removeAll();
+			SettingView.getInstance().body.add(content);
+			content.repaint();
+			SettingView.getInstance().body.repaint();
+			SettingView.getInstance().body.validate();
 		}
 
 		@Override

@@ -1,7 +1,6 @@
 package com.ab.view;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +14,6 @@ import com.ab.components.Chamber;
 public class CommUpdateView {
 
 	private static CommUpdateView instance;
-	
-	private Chamber c1;
 	
 	public synchronized static CommUpdateView getInstance() {
 		if(instance == null) {
@@ -42,7 +39,6 @@ public class CommUpdateView {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@ViewAction(action = "c1")
 	public void loadC1(ModelAndView modelAndView) {
 		Chamber c1 = Chamber.getChamberByName("C1");

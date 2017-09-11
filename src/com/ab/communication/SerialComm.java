@@ -5,11 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Timer;
 
@@ -148,11 +145,11 @@ public class SerialComm {
 		}
 	}
 
-    public static void sendChamberData(String chamberName, Double value){
+    public static void sendChamberData(String operationName, String chamberName, Double value){
 		writer.write((byte) (Integer.parseInt("2",16) & 0xff));
-		writer.write((byte) (Integer.parseInt("a1",16) & 0xff));
+		writer.write((byte) (Integer.parseInt(operationName,16) & 0xff));
 		writer.write((byte) (Integer.parseInt(chamberName,16) & 0xff));
-		String val = String.format("%4.1f" , value);
+		String val = String.format("%4.1f" , value == null ? 0.0 : value);
 		while(val.length() < 5) {
 			val = "0" + val;
 		}
@@ -178,6 +175,6 @@ public class SerialComm {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		sendChamberData("c1", 33.1);
+		sendChamberData("a1","c1", 33.1);
 	}
 }

@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import com.ab.communication.SerialComm;
-import com.ab.components.Chamber;
 import com.ab.components.Components;
 import com.ab.components.MenuButton;
 
@@ -37,6 +36,8 @@ public class MainWindow {
 	
 	public JFrame frame;
 	public JPanel mainPanel;
+	
+	public HomeView home;
 	
 	public JPanel header;
 	public JPanel body;
@@ -59,6 +60,12 @@ public class MainWindow {
 		
 		mainPanel = new JPanel();
 		mainPanel.setLayout(flowLayout);
+		
+
+		body = new JPanel();
+		body.setPreferredSize(new Dimension(800, 320));
+		body.setLayout(flowLayout);
+		body.setBackground(new Color(207,205,205));
 		
 		loadHeader();
 		
@@ -122,11 +129,11 @@ public class MainWindow {
 		
 		// Adding Graph icon as label
 		MenuButton graphMenu = new MenuButton("resources/tb-graph-o.png",
-				"resources/tb-graph-n.png", false);
+				"resources/tb-graph-n.png", false, new JPanel());
 		MenuButton settingsMenu = new MenuButton("resources/tb-setting-o.png",
-				"resources/tb-setting-n.png", false);
+				"resources/tb-setting-n.png", false, SettingView.getInstance());
 		MenuButton homeMenu = new MenuButton("resources/tb-home-o.png",
-				"resources/tb-home-n.png", true);
+				"resources/tb-home-n.png", true, HomeView.getInstance());
 		rightSide.add(graphMenu);
 		rightSide.add(settingsMenu);
 		rightSide.add(homeMenu);
@@ -139,21 +146,8 @@ public class MainWindow {
 	}
 	
 	private void loadBody() {
-		body = new JPanel();
-		body.setPreferredSize(new Dimension(800, 320));
-		body.setBackground(new Color(207,205,205));
 		
-		JPanel chamber1 = new Chamber("C1", "resources/ms-tempbg-c1.png");
-		body.add(chamber1);
-		
-		JPanel chamber2 = new Chamber("C2", "resources/ms-tempbg-c2.png");
-		body.add(chamber2);
-		
-		JPanel chamber3 = new Chamber("C3", "resources/ms-tempbg-c3.png");
-		body.add(chamber3);
-		
-		JPanel chamber4 = new Chamber("C4", "resources/ms-tempbg-c4.png");
-		body.add(chamber4);
+		body.add(HomeView.getInstance());
 		
 		mainPanel.add(body);
 	}

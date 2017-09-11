@@ -30,7 +30,7 @@ public class MainController {
 	public ModelAndView startCommPort() {
 		
 		try {
-			(new SerialComm()).connect("COM9");//"/dev/ttyACM0"//"COM8"
+			(new SerialComm()).connect("/dev/ttyACM0");//"/dev/ttyACM0"//"COM8"
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
