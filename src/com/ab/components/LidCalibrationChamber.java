@@ -133,7 +133,7 @@ public class LidCalibrationChamber extends JPanel {
 					oldSvValue = sv;
 					pv += sv;
 					sv = 0.0;
-					SerialComm.sendChamberData(operation, chamberName, pv);
+					SerialComm.sendChamberData(operation, chamberName, oldSvValue);
 					chamberBgLbl.setText("<html><div style='font-size: 15px'><br></div><font color=#373636>&nbsp;"+ String.format("%4.1f" , pv) +"\u00b0c</font><br><br><font color=#848282>&nbsp;"+ String.format("%4.1f" , sv) +"\u00b0c</font></html>");
 				}
 				upArrowLbl.setEnabled(isEditable);

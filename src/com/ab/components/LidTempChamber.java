@@ -131,7 +131,7 @@ public class LidTempChamber extends JPanel {
 				isEditable = !isEditable;
 				if(!isEditable) {
 					oldSvValue = sv;
-					SerialComm.sendChamberData(operation, chamberName, pv);
+					SerialComm.sendChamberData(operation, chamberName, sv);
 					chamberBgLbl.setText("<html><div style='font-size: 15px'><br></div><font color=#373636>&nbsp;"+ String.format("%4.1f" , pv) +"\u00b0c</font><br><br><font color=#848282>&nbsp;"+ String.format("%4.1f" , sv) +"\u00b0c</font></html>");
 				}
 				upArrowLbl.setEnabled(isEditable);
