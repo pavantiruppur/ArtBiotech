@@ -9,6 +9,7 @@ import com.ab.ModelAndView;
 import com.ab.annoation.View;
 import com.ab.annoation.ViewAction;
 import com.ab.components.Chamber;
+import com.ab.components.LidTempChamber;
 
 @View(name = "CommUpdateView")
 public class CommUpdateView {
@@ -116,23 +117,48 @@ public class CommUpdateView {
 	
 	@ViewAction(action = "d1")
 	public void loadD1(ModelAndView modelAndView) {
-		System.out.println("**************");
+		LidTempChamber d1 = LidTempChamber.getChamberByName("D1");
+		try{
+			d1.pv = Double.parseDouble((String)((ModelAndView)modelAndView.getModel()).getModel());
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
+		d1.refreshPV();
+	
+	}
 	
 	@ViewAction(action = "d2")
 	public void loadD2(ModelAndView modelAndView) {
-		System.out.println("**************");
+		LidTempChamber d2 = LidTempChamber.getChamberByName("D2");
+		try{
+			d2.pv = Double.parseDouble((String)((ModelAndView)modelAndView.getModel()).getModel());
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
+		d2.refreshPV();
+	}
 	
 	@ViewAction(action = "d3")
 	public void loadD3(ModelAndView modelAndView) {
-		System.out.println("**************");
+		LidTempChamber d3 = LidTempChamber.getChamberByName("D3");
+		try{
+			d3.pv = Double.parseDouble((String)((ModelAndView)modelAndView.getModel()).getModel());
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
+		d3.refreshPV();
+	}
 	
 	@ViewAction(action = "d4")
 	public void loadD4(ModelAndView modelAndView) {
-		System.out.println("**************");
+		LidTempChamber d4 = LidTempChamber.getChamberByName("D4");
+		try{
+			d4.pv = Double.parseDouble((String)((ModelAndView)modelAndView.getModel()).getModel());
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
+		d4.refreshPV();
+	}
 	
 	@ViewAction(action = "f1")
 	public void loadF1(ModelAndView modelAndView) {

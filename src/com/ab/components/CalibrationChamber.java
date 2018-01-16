@@ -24,22 +24,22 @@ public class CalibrationChamber extends JPanel {
 	public static List<CalibrationChamber> chambers = new ArrayList<>();
 	public static Map<String, CalibrationChamber> chamberMap = new HashMap<>();
 
-	String chamberName;
-	ImageIcon chamberIcon;
-	JLabel pvValue;
-	JLabel svValue;
+	public String chamberName;
+	public ImageIcon chamberIcon;
+	public JLabel pvValue;
+	public JLabel svValue;
 	public Double pv = 32.7;
-	Double sv = 0.0;
-	Double oldSvValue = sv;
-	String operation;
+	public Double sv = 0.0;
+	public Double oldSvValue = sv;
+	public String operation;
 	
 	public Integer flowRate = 50;
 	
-	Boolean isEditable = false;
+	public Boolean isEditable = false;
 	
-	JLabel chamberBgLbl;
-	JLabel downArrowLbl;
-	JLabel upArrowLbl;
+	public JLabel chamberBgLbl;
+	public JLabel downArrowLbl;
+	public JLabel upArrowLbl;
 
 	public CalibrationChamber(String operation, String chamberName, String chamberIcon) {
 		this.chamberName = chamberName;
